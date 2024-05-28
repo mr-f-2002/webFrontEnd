@@ -148,6 +148,10 @@
             <div class="class">
                 <img src="./image/classroom.png" alt="">
                 <p class="name"><%= classDTO.getCoursename() %></p>
+                <form action="SelectClassroomServlet" method="post">
+                    <input type="hidden" name="classId" value="<%= classDTO.getId() %>">
+                    <button type="submit">View Classroom</button>
+                </form>
             </div>
             <%
                 }

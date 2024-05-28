@@ -1,3 +1,4 @@
+<%@ page import="com.example.projectfrontend2_2.DTO.TeacherDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,7 +142,14 @@
         }
     </style>
 </head>
+<%
+    TeacherDTO teacher = (TeacherDTO) session.getAttribute("teacher");
+    String teacherName = "";
+    if(teacher != null) {
+        teacherName = teacher.getName();
 
+    }
+%>
 <body>
     <div class="container">
         <div class="left">
@@ -150,8 +158,7 @@
                 <img src="./image/student.png" alt="">
             </div>
             <div>
-                <h4>Niloy</h4>
-                <p>200041123</p>
+                <h4><%=teacherName%></h4>
             </div>
             <button id="logout" onclick="logout()">Log Out</button>
         </div>

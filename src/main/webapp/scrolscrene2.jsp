@@ -1,3 +1,11 @@
+<%@ page import="com.example.projectfrontend2_2.DTO.TeacherDTO" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.ClassroomDTO" %>
+<%@ page import="com.example.projectfrontend2_2.http.RequestMaker" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.PostDTO" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +39,7 @@
             font-size: 20px;
             border-radius: 0 10px 10px 0;
         }
-        
+
         .circle{
             width: 200px;
             height: 200px;
@@ -65,7 +73,7 @@
             margin: 5px 0 40px 0;
             text-align: center;
         }
-        
+
         .right{
             width: 70%;
             padding-left: 30px;
@@ -128,6 +136,15 @@
         }
     </style>
 </head>
+
+<%
+    TeacherDTO teacher = (TeacherDTO) session.getAttribute("teacher");
+    String teacherName = "";
+    if(teacher != null) {
+        teacherName = teacher.getName();
+    }
+%>
+<%ClassroomDTO cdto = (ClassroomDTO) session.getAttribute("currentClassroom"); %>
 <body>
     <div class="container">
         <div class="left">
@@ -136,8 +153,7 @@
                 <img src="./image/student.png" alt="">
             </div>
             <div>
-                <h4>Niloy</h4>
-                <p>200041123</p>
+                <h4><%=teacherName%></h4>
             </div>
             <button id="post" onclick="onPostClick()">Post</button>
             <button id="post" onclick="onAssignmentClick()">Assignment</button>
@@ -146,9 +162,9 @@
             <button id="logout" onclick="logout()">Log Out</button>
         </div>
         <div class="right">
-            <h3>Classroom Title</h3>
+            <h3><%=cdto.getCoursename()%></h3>
             <textarea name="assignment" placeholder="Type something..." id="classTitle"></textarea>
-            <div class="attachmentPanel">    
+            <div class="attachmentPanel">
                 <label for="attachments">Attachments</label>
                 <ul id="attachmentList">
                     <li>No Attachment Yet!</li>
@@ -158,9 +174,25 @@
                     <button>Post</button>
                 </div>
             </div>
-            <div id="postPanel">
-            
+            <div id="postPanel" class="post-container">
+                <!-- Display posts -->
+                <%
+                    RequestMaker rqm = new RequestMaker();
+                    List<Long> classlist = new ArrayList<>();
+                    classlist.addAll(cdto.getPosts());
+
+                    for (Long postId : classlist) {
+                        PostDTO post = rqm.fetch_post(postId);
+                        LocalDateTime lc = post.getTime().toLocalDateTime();
+                %>
+                <div class="post-tile">
+                    <p><%= post.getText() %></p>
+                    <p><%= post.getPosted_by() %></p>
+                    <p><%= lc.format(DateTimeFormatter.ofPattern("d MMM uuuu , HH:mm:ss ")) %></p>
+                </div>
+                <% } %>
             </div>
+
         </div>
     </div>
 
