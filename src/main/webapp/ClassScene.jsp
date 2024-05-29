@@ -112,6 +112,10 @@
     </style>
 </head>
 <body>
+<%
+    session = request.getSession();
+    out.println(session.getAttribute("studentDTO"));
+%>
 <div class="container">
     <div class="left">
         <h2>Student Portal</h2>
