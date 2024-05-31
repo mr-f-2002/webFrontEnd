@@ -89,4 +89,13 @@ public class AssignmentDTO {
     public void setSubmissionsOfThisID(List<Long> submissionsOfThisID) {
         this.submissionsOfThisID = submissionsOfThisID;
     }
+    public AssignmentDTO(Long id, String title, String instruction, Timestamp deadline, float marks, Long classroomid) {
+        this.id = id;
+        this.title = title;
+        this.instruction = instruction;
+        this.deadline = deadline;
+        this.marks = marks;
+        this.classroomid = classroomid;
+
+    }
 }

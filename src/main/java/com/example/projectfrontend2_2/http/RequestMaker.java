@@ -110,6 +110,7 @@ public class RequestMaker {
 
         System.out.println(gson.toJson(pdto));
         HttpClient client = HttpClient.newHttpClient();
+        System.out.println(pdto);
 
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(url + "/classroom/createpost")).
@@ -118,7 +119,8 @@ public class RequestMaker {
                 build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+        System.out.println("Printing out the response now:");
+        System.out.println(response);
 
     }
 
@@ -280,7 +282,7 @@ public class RequestMaker {
     }
     public AssignmentDTO fetch_ass(Long id) throws IOException, InterruptedException {
 
-
+//        System.out.println(id);
         GsonBuilder builder = new GsonBuilder();
         builder.setDateFormat("yyyy-MM-dd HH:mm:ss");
         gson = builder.create();
@@ -294,8 +296,11 @@ public class RequestMaker {
                 uri(URI.create(url + "/classroom/getassignment/"+id )).
                 GET().
                 build();
+        System.out.println(request);
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response);
 
         System.out.println(response.body().toString());
         AssignmentDTO pdto = gson.fromJson(response.body().toString() , AssignmentDTO.class);
@@ -360,7 +365,7 @@ public class RequestMaker {
     }
 
     public void create_assignment(AssignmentDTO pdto) throws IOException, InterruptedException {
-
+        System.out.println("/classroom/create_assignment acessed");
         GsonBuilder builder = new GsonBuilder();
         builder.setDateFormat("yyyy-MM-dd HH:mm:ss");
         gson = builder.create();
@@ -376,6 +381,8 @@ public class RequestMaker {
                 build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("The response to the /create_assignment endpoint is:");
+        System.out.println(response);
 
 
     }

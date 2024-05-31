@@ -21,6 +21,7 @@ import java.util.Set;
 public class TeacherLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Teacher servlet accessed");
         String teacherID = req.getParameter("teacherID");
         String password = req.getParameter("passWord");
 

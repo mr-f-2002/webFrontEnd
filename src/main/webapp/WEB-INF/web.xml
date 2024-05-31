@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app
-   xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-   version="4.0">
-    
+        xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+        version="4.0">
+
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
+
     <servlet>
         <servlet-name>helloServlet</servlet-name>
         <servlet-class>com.example.projectfrontend2_2.servlets.HelloServlet</servlet-class>
@@ -17,6 +18,14 @@
         <url-pattern>/helloServlet</url-pattern>
     </servlet-mapping>
 
-
+    <!-- TeacherLoginServlet configuration -->
+    <servlet>
+        <servlet-name>TeacherLoginServlet</servlet-name>
+        <servlet-class>com.example.projectfrontend2_2.servlets.TeacherLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TeacherLoginServlet</servlet-name>
+        <url-pattern>/TeacherLoginServlet</url-pattern>
+    </servlet-mapping>
 
 </web-app>
