@@ -45,6 +45,7 @@ public class StudentLoginServlet extends HttpServlet {
 
                 List<Long> classroom_id = stdo.getClassroom_id();
                 List<ClassroomDTO> all_classrooms = new ArrayList<>();
+                List<TeacherDTO> all_teachers = new ArrayList<>();
                 for (Long id : classroom_id) {
                     try {
                         all_classrooms.add(rqm.fetch_classroom(id));
@@ -54,10 +55,14 @@ public class StudentLoginServlet extends HttpServlet {
                 }
                 session.setAttribute("all_classrooms", all_classrooms);
 
+                // Add session attributes for future access
+                session.setAttribute("loggedIn", true); // Example attribute indicating user is logged in
+
                 resp.sendRedirect("ClassScene.jsp");
             } else {
                 resp.sendRedirect("Student_login.jsp?error=Invalid login");
             }
+
         } else {
             resp.sendRedirect("Student_login.jsp?error=Missing credentials");
         }

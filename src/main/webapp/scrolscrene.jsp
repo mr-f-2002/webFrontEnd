@@ -1,3 +1,11 @@
+<%@ page import="com.example.projectfrontend2_2.DTO.StudentDTO" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.PostDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.projectfrontend2_2.http.RequestMaker" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.ClassroomDTO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -132,63 +140,148 @@
         #postBtn{
             margin-left: 20px;
         }
-        #scroll{
-            width: 100%;
-            background-color: white;
-            min-height: 82%;
+        #contentContainer{
+            width: 90%;
+            min-height: 80%;
+            max-height: 80%;
             margin-top: 3%;
-
+            overflow: auto;
         }
+        .post {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 10px;
+            width: 95%;
+        }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .post-content {
+            margin-bottom: 10px;
+        }
+        .post-footer {
+            margin-top: 10px;
+        }
+        .posted-by {
+            font-weight: bold;
+        }
+        .timestamp {
+            color: #777;
+            font-size: 12px;
+        }
+        .links {
+                    list-style-type: none;
+                    padding: 0;
+                }
+
+                .links li {
+                    margin-bottom: 5px;
+                }
+
+                .links a {
+                    color: #337ab7;
+                    text-decoration: none;
+                }
+
+                .classroom-id {
+                    color: #777;
+                    font-size: 12px;
+                }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left">
-            <h1>Student Portal</h1>
-            <div class="circle">
-                <img src="./image/student.png" alt="">
-            </div>
-            <div id="postCount">0</div>
-            <button id="post" onclick="onPostClick()">Post</button>
-            <button id="post" onclick="onAssignmentClick()">Assignment</button>
-            <button id="logout">Log Out</button>
+<% String courseName = request.getParameter("courseName"); %>
+<% String teacher = request.getParameter("teacher"); %>
+<% Long courseId = Long.valueOf(request.getParameter("courseId")); %>
+<div class="container">
+    <div class="left">
+        <h1>Student Portal</h1>
+        <div class="circle">
+            <img src="./image/student.png" alt="">
         </div>
-        <div class="right">
-            <img src="./image/bg2.png" alt="">
-            <div class="top">
-                <h1 >Classroom Title</h1>
-                <div class="r">
-                    <button id="back" onclick="goToHome2()">Back</button>
+        <%
+            StudentDTO sdto = (StudentDTO) request.getSession().getAttribute("studentDTO");
+        %>
+        <div id="studentInfo">
+            <p><strong>Name:</strong> <%= sdto.getName() %></p>
+            <p><strong>Student ID:</strong> <%= sdto.getStudid() %></p>
+        </div>
+        <button id="logoutBtn">Log Out</button>
+    </div>
+    <div class="right">
+        <img src="./image/bg2.png" alt="">
+        <div class="top">
+            <!-- Display the classroom title -->
+            <h1 id="classroomTitle"><%= courseName  %></h1>
+            <p><%= teacher %></p>
+        </div>
+        <div style="width: 100%; height: 5%; display: flex;">
+            <textarea type="text" placeholder="Type something..." name="post" id="postText"></textarea>
+            <button id="postBtn" onclick="createPost()">Post</button>
+        </div>
+        <%
+            RequestMaker rqm = new RequestMaker();
+            ClassroomDTO cdto = null;
+            try {
+                cdto = rqm.fetch_classroom(courseId);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            List<Long> classlist = new ArrayList<>(cdto.getPosts());
+            classlist.sort((a, b) -> Math.toIntExact(b - a));
+        %>
+        <div id="contentContainer">
+            <%
+                for(Long id : classlist) {
+                    PostDTO p = null;
+                    try {
+                        p = rqm.fetch_post(id);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    LocalDateTime lc = p.getTime().toLocalDateTime();
+            %>
+            <div class="post">
+                <div class="post-header">
+                    <p class="posted-by"><%= p.getPosted_by() %></p>
+                    <p class="timestamp"><%= lc %></p>
+                </div>
+                <div class="post-content">
+                    <p class="text"><%= p.getText() %></p>
+                    <ul class="links">
+                        <% for (String link : p.getLink()) { %>
+                        <li><a href="<%= link %>"><%= link %></a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="post-footer">
+                    <p class="classroom-id">Classroom ID: <%= p.getClassroom_id() %></p>
                 </div>
             </div>
-            <div style="width: 100%; height: 5%; display: flex;">
-                <textarea type="text" placeholder="Type something..." name="post" id="post"></textarea>
-                <button id="postBtn" onclick="onPostClick()">Post</button>
-            </div>
-            <div id="scroll"></div>
+            <% } %>
         </div>
     </div>
+</div>
 
-    <Script>
-        function goToHome() {
-            // Implement your function logic here
-        }
+<!-- Your JavaScript functions -->
+<script>
 
-        function goToHome2() {
-            // Implement your function logic here
-        }
+    function createPost() {
+        // Implement your logic to create a post
+    }
 
-        function create_post() {
-            // Implement your function logic here
-        }
+    function onPostClick() {
+        // Implement your logic to handle post click event
+    }
 
-        function onPostClick() {
-            // Implement your function logic here
-        }
-
-        function onAssignmentClick() {
-            // Implement your function logic here
-        }
-    </Script>
+    function onAssignmentClick() {
+        // Implement your logic to handle assignment click event
+    }
+</script>
 </body>
 </html>

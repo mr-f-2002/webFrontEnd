@@ -3,6 +3,18 @@
 <%@ page import="com.example.projectfrontend2_2.DTO.ClassroomDTO" %>
 <%@ page import="com.example.projectfrontend2_2.DTO.StudentDTO" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.TeacherDTO" %>
+<%
+    session = request.getSession();
+    StudentDTO student = (StudentDTO) session.getAttribute("studentDTO");
+    List<ClassroomDTO> classrooms = (List<ClassroomDTO>) session.getAttribute("all_classrooms");
+//    List<TeacherDTO> teachers = (List<TeacherDTO>) session.getAttribute("all_teachers");
+
+    if (student == null || classrooms == null) {
+        response.sendRedirect("index.jsp"); // Redirect to login page if student or classrooms are not in session
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,6 +141,26 @@
             right: 0;
             z-index: -1;
         }
+        #classGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .classCard {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .classCard:hover {
+            background-color: #e0e0e0;
+        }
+
+        #details {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -138,78 +170,59 @@
         <div class="circle">
             <img src="./image/student.png" />
         </div>
-        <%
-            session = request.getSession();
-            StudentDTO student = (StudentDTO) session.getAttribute("student");
-            List<ClassroomDTO> classrooms = (List<ClassroomDTO>) session.getAttribute("classrooms");
-            if (student != null) {
-        %>
         <div id="name" style="margin-top: 10px;"><%= student.getName() %></div>
         <div id="id"><%= student.getStudid() %></div>
-        <% } %>
-        <button id="Logout" onclick="logout()">Log Out</button>
+        <button id="Logout" onclick="location.href='./index.jsp'">Log Out</button>
     </div>
     <div class="right">
         <img src="./image/bg2.png" alt="">
         <div class="top">
             <h1>Classrooms</h1>
             <div class="r">
-                <button id="back" onclick="goToHome()">Back</button>
+                <button id="back" onclick="location.href='./ClassScene.jsp'">Back</button>
                 <button onclick="gotoStats()">Check Attendance</button>
             </div>
         </div>
-        <select id="courses" onchange="onCourseClick()">
-            <option selected disabled>Select a classroom</option>
-            <%
-                if (classrooms != null) {
-                    for (ClassroomDTO classroom : classrooms) {
-            %>
-            <option value="<%= classroom.getCoursename() %>" data-teacher="<%= classroom.getTeacher() %>"><%= classroom.getDept() %> <%= classroom.getCoursecode() %></option>
-            <%
-                    }
-                }
-            %>
-        </select>
+
         <div class="holder">
-            <div id="txt"></div>
-            <div id="course"></div>
-            <div id="teacher"></div>
-            <div id="due_ass"></div>
-            <button id="Logout1" onclick="goToCore()">Let's Go</button>
+            <div id="classGrid">
+                <% for (ClassroomDTO classroom : classrooms) { %>
+                <div class="classCard" onclick="onCourseClick('<%= classroom.getCoursename() %>', '<%= classroom.getTeacher() %>', '<%= classroom.getId() %>')">
+                    <h3 style="color: black"><%= classroom.getCoursename() %></h3>
+                    <p style="color: black">Teacher: <%= classroom.getTeacher() %></p>
+                    <p style="color: black">Due Assignments: <%= classroom.getAssignmentsHereID() %></p>
+                </div>
+                <% } %>
+            </div>
         </div>
+        <form id="courseForm" action="scrolscrene.jsp" method="post" style="display: none;">
+            <input type="hidden" name="courseName">
+            <input type="hidden" name="teacher">
+            <input type="hidden" name="courseId">
+        </form>
+
     </div>
 </div>
 
 <script>
-    function logout() {
-        location.href = './LogoutServlet';
-    }
+    function onCourseClick(courseName, teacher, courseId) {
+        // Assuming you have a hidden form with id "courseForm"
+        var form = document.getElementById("courseForm");
 
-    function goToHome() {
-        location.href = './ClassScene';
-    }
+        // Set the values of hidden input fields
+        form.elements["courseName"].value = courseName;
+        form.elements["teacher"].value = teacher;
+        form.elements["courseId"].value = courseId;
 
-    function gotoStats() {
-        location.href = './Stats';
+        // Submit the form
+        form.submit();
     }
 
     function goToCore() {
-        var course = document.getElementById('course').innerText;
-        if (course) {
-            location.href = './Core?course=' + course;
-        }
+        // Logic for navigating to the core page with the selected course details
     }
-
-    function onCourseClick() {
-        var courses = document.getElementById('courses');
-        var selectedOption = courses.options[courses.selectedIndex];
-        var courseName = selectedOption.value;
-        var teacher = selectedOption.getAttribute('data-teacher');
-
-        document.getElementById('txt').innerText = selectedOption.text;
-        document.getElementById('course').innerText = courseName;
-        document.getElementById('teacher').innerText = 'Teacher ID: ' + teacher;
-        document.getElementById('due_ass').innerText = 'Nothing due';
+    function gotoStats() {
+        // Logic for navigating to the attendance stats page
     }
 </script>
 </body>
