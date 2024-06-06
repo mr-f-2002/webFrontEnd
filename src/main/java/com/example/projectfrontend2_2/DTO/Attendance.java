@@ -6,7 +6,7 @@ import java.sql.Date;
 public class Attendance {
 
 
-    Date date;
+    java.util.Date date;
 
 
     Long classroomid;
@@ -24,7 +24,7 @@ public class Attendance {
     }
 
     public Date getDate() {
-        return date;
+        return (Date) (Date) date;
     }
 
     public void setDate(Date date) {

@@ -4,6 +4,8 @@ import com.example.projectfrontend2_2.DTO.*;
 import com.example.projectfrontend2_2.MultipartUtility;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -18,6 +20,9 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class RequestMaker {
@@ -210,6 +215,37 @@ public class RequestMaker {
         return cdto;
     }
 
+
+    public List<Attendance> fetchAttendanceByClassroomIdAndDate(Long classroomId, String dateStr) throws IOException, InterruptedException {
+        gson = new Gson();
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Format the date string to match the expected format "yyyy-MM-dd"
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = inputFormat.parse(dateStr);
+            dateStr = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/classroom/attendance/" + classroomId + "/" + dateStr))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        Type listtype = new TypeToken<List<Attendance>>(){}.getType();
+        List<Attendance> attendanceList = gson.fromJson(response.body().toString() , listtype);
+        System.out.println(attendanceList);
+        return attendanceList;
+    }
+
+
     public StudentDTO fetch_student(Long id) throws IOException, InterruptedException {
 
         gson = new Gson();
@@ -231,6 +267,9 @@ public class RequestMaker {
         System.out.println("here" + cdto.getDept());
         return cdto;
     }
+
+
+
 
     public List<ClassroomDTO> fetch_all_classroom() throws IOException, InterruptedException {
 
