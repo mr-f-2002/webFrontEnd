@@ -1,7 +1,7 @@
 package com.example.projectfrontend2_2.DTO;
 
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Attendance {
 

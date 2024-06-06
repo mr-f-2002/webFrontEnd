@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @WebServlet("/createAttendance")
 public class CreateAttendanceServlet extends HttpServlet {
@@ -28,8 +30,15 @@ public class CreateAttendanceServlet extends HttpServlet {
                 long studentId = Long.parseLong(studentIdStr);
                 long classroomId = currentClassroom.getId();
 
-//                Date currentDate = (Date) request.getAttribute("currentDate");
-                Date currentDate = new Date(System.currentTimeMillis());
+                String dateStr = (String) session.getAttribute("date_picked");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date currentDate = null;
+                try {
+                    currentDate = dateFormat.parse(dateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+//                Date currentDate = new Date(System.currentTimeMillis());
                 boolean present = request.getParameter("action").equals("present");
 
                 // Create an Attendance object
@@ -42,6 +51,26 @@ public class CreateAttendanceServlet extends HttpServlet {
                     throw new RuntimeException(e);
                 }
 
+//                String selectedDate = request.getParameter("selectedDate");
+//                if (selectedDate == null){
+//                    selectedDate = "";
+//                }
+//
+//                HttpSession session1 = request.getSession();
+//                session1.setAttribute("date_picked", selectedDate);
+//                ClassroomDTO classroom = (ClassroomDTO) session1.getAttribute("currentClassroom");
+//                Long classid = classroom.getId();
+//                try {
+//                    List<Attendance> attendanceList = rqm.fetchAttendanceByClassroomIdAndDate(classid,selectedDate);
+//                    session1.setAttribute("attendanceList", attendanceList);
+//                    for (Attendance attendance1 : attendanceList) {
+//                        System.out.println(selectedDate);
+//                        System.out.println(attendance1.getStudentid());
+//                        System.out.println(attendance1.getPresent());
+//                    }
+//                } catch (IOException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 // Redirect back to the attendance page
                 response.sendRedirect(request.getContextPath() + "/attendance");
             } else {
@@ -54,3 +83,4 @@ public class CreateAttendanceServlet extends HttpServlet {
         }
     }
 }
+

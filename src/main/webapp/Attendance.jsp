@@ -1,3 +1,5 @@
+<%@ page import="com.example.projectfrontend2_2.DTO.Attendance" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -85,12 +87,36 @@
         <label>Enter Date:</label><br>
         <input type="date" id="datePicker" name="datePicker">
         <div id="scroll">
-            <%-- Include your attendance tiles here --%>
-            <c:forEach var="student" items="${students}">
+<%--            <%--%>
+<%--                List<Attendance> attList = (List<Attendance>) request.getSession().getAttribute("attendanceList");--%>
+<%--                System.out.println(attList + "\n*******************");--%>
+<%--            %>--%>
+            <c:forEach var="student" items="${sessionScope.students}">
+                <%-- Default colors --%>
+                <c:set var="colorP" value="#95ace8"/>
+                <c:set var="colorA" value="#95ace8"/>
+
+                <%-- Check attendance for the current student --%>
+                <c:forEach var="a" items="${sessionScope.attendanceList}">
+                    <c:if test="${a.studentid == student.id}">
+                        <c:choose>
+                            <c:when test="${a.present == true}">
+                                <c:set var="colorP" value="green"/>
+                                <c:set var="colorA" value="#95ace8"/>
+                            </c:when>
+                            <c:when test="${a.present == false}">
+                                <c:set var="colorP" value="#95ace8"/>
+                                <c:set var="colorA" value="red"/>
+                            </c:when>
+                        </c:choose>
+                    </c:if>
+                </c:forEach>
+
+                <%-- Include attendance tile with parameters --%>
                 <jsp:include page="attendance-tile.jsp">
                     <jsp:param name="studentId" value="${student.id}"/>
-                    <jsp:param name="colorP" value="green"/>
-                    <jsp:param name="colorA" value="#95ace8"/>
+                    <jsp:param name="colorP" value="${colorP}"/>
+                    <jsp:param name="colorA" value="${colorA}"/>
                 </jsp:include>
             </c:forEach>
         </div>
@@ -106,10 +132,13 @@
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send("selectedDate=" + selectedDate);
         console.log("Session attribute 'date_picked' set to: " + selectedDate);
+        location.reload()
     });
 
-    let today = new Date();
-    document.getElementById("datePicker").value = today.toISOString().substring(0, 10);
+    let datePicked = "<%= session.getAttribute("date_picked") %>";
+    document.getElementById("datePicker").value = datePicked
+    console.log("test done " + datePicked)
+
 </script>
 </body>
 </html>

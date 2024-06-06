@@ -47,7 +47,7 @@ public class AttendanceServlet extends HttpServlet {
 
             studentDTOS.sort((a, b) -> Math.toIntExact(a.getStudid() - b.getStudid()));
 
-            request.setAttribute("students", studentDTOS);
+            session.setAttribute("students", studentDTOS);
             request.setAttribute("currentDate", currentDate);
             request.getRequestDispatcher("/Attendance.jsp").forward(request, response);
         } else {
