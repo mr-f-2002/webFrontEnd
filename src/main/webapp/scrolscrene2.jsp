@@ -249,7 +249,6 @@
         </form>
         <% } %>
         <div id="contentPanel" class="content-container">
-            <!-- Display posts or assignments based on the view -->
             <%
                 RequestMaker rqm = new RequestMaker();
                 if ("posts".equals(view)) {

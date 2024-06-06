@@ -32,19 +32,25 @@ public class StudentLoginServlet extends HttpServlet {
 
             Gson gson = new Gson();
             RequestMaker rqm = new RequestMaker();
-            StudentDTO stdo = null;
+            StudentDTO sdto = null;
             try {
-                stdo = rqm.login_attempt(ldto, "/login/student");
+                sdto = rqm.login_attempt(ldto, "/login/student");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-            if (stdo != null && stdo.getStudid().equals(ldto.getCommon_id())) {
+            if (sdto != null && sdto.getStudid().equals(ldto.getCommon_id())) {
                 HttpSession session = req.getSession();
-                session.setAttribute("studentDTO", stdo);
+                session.setAttribute("studentDTO", sdto);
 
-                List<Long> classroom_id = stdo.getClassroom_id();
+                List<Long> classroom_id = sdto.getClassroom_id();
                 List<ClassroomDTO> all_classrooms = new ArrayList<>();
+                List<ClassroomDTO> all_classrooms_all;
+                try{
+                    all_classrooms_all = new ArrayList<>(rqm.fetch_all_classroom());
+                }catch (InterruptedException e){
+                    throw new RuntimeException(e);
+                }
                 List<TeacherDTO> all_teachers = new ArrayList<>();
                 for (Long id : classroom_id) {
                     try {
@@ -53,6 +59,8 @@ public class StudentLoginServlet extends HttpServlet {
                         throw new RuntimeException(e);
                     }
                 }
+                System.out.println(all_classrooms_all + "oh year yosndofso fois" + all_classrooms);
+                session.setAttribute("all_class", all_classrooms_all);
                 session.setAttribute("all_classrooms", all_classrooms);
 
                 // Add session attributes for future access

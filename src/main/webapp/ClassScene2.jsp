@@ -4,6 +4,7 @@
 <%@ page import="com.example.projectfrontend2_2.DTO.StudentDTO" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="com.example.projectfrontend2_2.DTO.TeacherDTO" %>
+
 <%
     session = request.getSession();
     StudentDTO student = (StudentDTO) session.getAttribute("studentDTO");
@@ -121,13 +122,14 @@
         }
         .holder {
             width: 80%;
-            height: 40vh;
+            height: 70vh;
             background-color: #1133ba54;
             border-radius: 4px;
             position: relative;
             margin-top: 5px;
             padding: 20px;
             color: white;
+            overflow: auto;
         }
         #Logout1 {
             position: absolute;

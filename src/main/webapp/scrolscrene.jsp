@@ -234,10 +234,10 @@
             <h1 id="classroomTitle"><%= courseName  %></h1>
             <p><%= teacher %></p>
         </div>
-        <div style="width: 100%; height: 5%; display: flex;">
-            <textarea type="text" placeholder="Type something..." name="post" id="postText"></textarea>
-            <button id="postBtn" onclick="createPost()">Post</button>
-        </div>
+<%--        <div style="width: 100%; height: 5%; display: flex;">--%>
+<%--            <textarea type="text" placeholder="Type something..." name="post" id="postText"></textarea>--%>
+<%--            <button id="postBtn" onclick="createPost()">Post</button>--%>
+<%--        </div>--%>
         <%
             RequestMaker rqm = new RequestMaker();
             ClassroomDTO cdto = null;
