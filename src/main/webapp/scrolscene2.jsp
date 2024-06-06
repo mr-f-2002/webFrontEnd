@@ -15,7 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClassRoom: Redefined</title>
     <style>
-        /* Your CSS styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -119,9 +118,23 @@
             margin: 0;
             padding: 10px;
         }
-        .attachmentPanel textarea {
-            width: calc(100% - 20px); /* Adjust width considering padding */
-            margin: 10px 0; /* Add some margin for better spacing */
+        .attachmentPanel li {
+            background-color: #ffffff;
+            margin-bottom: 10px; /* Add space between items */
+            padding: 10px;
+            border-radius: 5px;
+            list-style: none; /* Remove default list style */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Space out the content */
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .attachmentPanel li input {
+            width: 90%; /* Make input take most of the li's width */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
         .attachmentPanel .btnGroup{
             display: flex;
@@ -154,6 +167,7 @@
             margin: 0 0 10px;
         }
         /* Modal styles */
+        /* Modal styles */
         .modal {
             display: none; /* Hidden by default */
             position: fixed;
@@ -163,37 +177,94 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0,0,0);
             background-color: rgba(0,0,0,0.4);
             padding-top: 60px;
         }
+
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+            border-radius: 5px;
         }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
         }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button.btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #1133ba54;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button.btn:hover {
+            background-color: #1133ba;
+        }
+
+        .delete-btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff0000;
+        }
+
+
     </style>
 </head>
 
 <%
     TeacherDTO teacher = (TeacherDTO) session.getAttribute("teacher");
     String teacherName = "";
+    boolean isTeacher = false;
     if(teacher != null) {
         teacherName = teacher.getName();
+        isTeacher = true;
     }
 
     ClassroomDTO cdto = (ClassroomDTO) session.getAttribute("currentClassroom");
@@ -201,6 +272,7 @@
     if (view == null) {
         view = "posts"; // Default view
     }
+    System.out.println("Page has been accessed");
 %>
 
 <body>
@@ -213,11 +285,11 @@
         <div>
             <h4><%=teacherName%></h4>
         </div>
-        <form action="scrolscrene2.jsp" method="get">
+        <form action="scrolscene2.jsp" method="get">
             <input type="hidden" name="view" value="posts">
             <button type="submit">Posts</button>
         </form>
-        <form action="scrolscrene2.jsp" method="get">
+        <form action="scrolscene2.jsp" method="get">
             <input type="hidden" name="view" value="assignments">
             <button type="submit">Assignments</button>
         </form>
@@ -238,8 +310,7 @@
             <div class="attachmentPanel">
                 <label for="attachments">Attachments</label>
                 <ul id="attachmentList">
-                    <textarea placeholder="Paste a link here..."></textarea>
-                    <li>No Attachment Yet!</li>
+                    <li><input type="text" name="link" placeholder="Paste a link here..." /></li>
                 </ul>
                 <div class="btnGroup">
                     <button type="button" onclick="addAttachment()">+Add</button>
@@ -262,8 +333,20 @@
             <div class="content-tile">
                 <p><%= post.getText() %></p>
                 <p><%= post.getPosted_by() %></p>
+                <ul>
+                    <% for (String link : post.getLink()) { %>
+                    <li><a href="<%= link %>"><%= link %></a></li>
+                    <% } %>
+                </ul>
                 <p><%= lc.format(DateTimeFormatter.ofPattern("d MMM uuuu , HH:mm:ss ")) %></p>
+                <% if (isTeacher) { %>
+                <form action="DeletePostServlet" method="post">
+                    <input type="hidden" name="postId" value="<%= post.getId() %>">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+                <% } %>
             </div>
+
             <%
                 }
             } else if ("assignments".equals(view)) {
@@ -291,28 +374,39 @@
 <div id="assignModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Add New Assignment</h2>
+        <h2 style="text-align: center;">Add New Assignment</h2>
         <form action="AssignmentServlet" method="post">
-            <label for="assignmentTitle">Title:</label>
-            <input type="text" id="assignmentTitle" name="title" required>
-            <label for="assignmentInstructions">Instructions:</label>
-            <textarea id="assignmentInstructions" name="instructions" required></textarea>
-            <label for="assignmentDeadline">Deadline:</label>
-            <input type="datetime-local" id="assignmentDeadline" name="deadline" required>
-            <label for="assignmentMarks">Marks:</label>
-            <input type="number" id="assignmentMarks" name="marks" required>
-            <button type="submit">Add Assignment</button>
+            <div class="form-group">
+                <label for="assignmentTitle">Title:</label>
+                <input type="text" id="assignmentTitle" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="assignmentInstructions">Instructions:</label>
+                <textarea id="assignmentInstructions" name="instructions" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="assignmentDeadline">Deadline:</label>
+                <input type="datetime-local" id="assignmentDeadline" name="deadline" required>
+            </div>
+            <div class="form-group">
+                <label for="assignmentMarks">Marks:</label>
+                <input type="number" id="assignmentMarks" name="marks" required>
+            </div>
+            <button type="submit" class="btn">Add Assignment</button>
         </form>
     </div>
 </div>
 
+
 <script>
     function addAttachment() {
-        const ul = document.getElementById("attachmentList");
-        const li = document.createElement("li");
-        const textarea = document.createElement("textarea");
-        textarea.placeholder = "Paste a link here...";
-        li.appendChild(textarea);
+        var ul = document.getElementById("attachmentList");
+        var li = document.createElement("li");
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "link"; // Ensure this matches the parameter name expected in the servlet
+        input.placeholder = "Paste a link here...";
+        li.appendChild(input);
         ul.appendChild(li);
     }
 
@@ -341,6 +435,8 @@
             modal.style.display = "none";
         }
     }
+
+
 </script>
 </body>
 </html>

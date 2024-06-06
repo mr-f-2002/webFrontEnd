@@ -24,7 +24,7 @@ public class SelectClassroomServlet extends HttpServlet {
                 ClassroomDTO classroom = rqm.fetch_classroom(classId);
                 HttpSession session = req.getSession();
                 session.setAttribute("currentClassroom", classroom);
-                resp.sendRedirect("scrolscrene2.jsp");
+                resp.sendRedirect("scrolscene2.jsp");
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 resp.sendRedirect("TeacherScene.jsp?error=classFetchFailed");

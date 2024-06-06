@@ -319,9 +319,55 @@ public class RequestMaker {
         System.out.println("here" );
         return pdto;
     }
-    public AssignmentDTO fetch_ass(Long id) throws IOException, InterruptedException {
 
-//        System.out.println(id);
+    public List<Long> getPostIdsByClassId(Long classId) {
+        List<Long> postIds = null;
+        try {
+            // Assuming you have an endpoint to fetch post IDs by class ID
+            URL url = new URL("http://localhost:8081/class/" + classId + "/posts");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // Deserialize JSON response into List<Long>
+                Type listType = new TypeToken<List<Long>>() {}.getType();
+                postIds = new Gson().fromJson(response.toString(), listType);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return postIds;
+    }
+
+    public boolean deletePost(Long postId) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/classroom/deletepost/" + postId))
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
+
+        System.out.println("Response from delete post:");
+        return (response.statusCode() == 200) ;
+    }
+
+
+        public AssignmentDTO fetch_ass(Long id) throws IOException, InterruptedException {
+
+//      System.out.println(id);
         GsonBuilder builder = new GsonBuilder();
         builder.setDateFormat("yyyy-MM-dd HH:mm:ss");
         gson = builder.create();

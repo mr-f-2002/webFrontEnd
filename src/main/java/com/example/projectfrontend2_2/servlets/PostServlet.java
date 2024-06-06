@@ -68,7 +68,8 @@ public class PostServlet extends HttpServlet {
         }
 
         // Redirect back to the classroom page
-        response.sendRedirect(request.getContextPath() + "/scrolscrene2.jsp");
+        response.sendRedirect(request.getContextPath() + "/scrolscene2.jsp");
     }
+
 
 }
