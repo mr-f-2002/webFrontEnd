@@ -18,12 +18,12 @@
     <form action="/createAttendance" method="post">
         <input type="hidden" name="studentId" value="${param.studentId}">
         <input type="hidden" name="action" value="present">
-        <button type="submit" onclick="changeColor('green')" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; margin-right: 5px; cursor: pointer;">P</button>
+        <button type="submit" onclick="changeColor('green')" style="background-color: ${param.colorP}; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; margin-right: 5px; cursor: pointer;">P</button>
     </form>
     <form action="/createAttendance" method="post">
         <input type="hidden" name="studentId" value="${param.studentId}">
         <input type="hidden" name="action" value="absent">
-        <button type="submit" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;" onclick="changeColor('red')">A</button>
+        <button type="submit" style="background-color: ${param.colorA}; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;" onclick="changeColor('red')">A</button>
     </form>
     <script>
         function changeColor(color){

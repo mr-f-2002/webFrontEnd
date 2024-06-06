@@ -83,16 +83,33 @@
     </div>
     <div class="right">
         <label>Enter Date:</label><br>
-        <input type="date" id="datePicker">
+        <input type="date" id="datePicker" name="datePicker">
         <div id="scroll">
+            <%-- Include your attendance tiles here --%>
             <c:forEach var="student" items="${students}">
                 <jsp:include page="attendance-tile.jsp">
                     <jsp:param name="studentId" value="${student.id}"/>
+                    <jsp:param name="colorP" value="green"/>
+                    <jsp:param name="colorA" value="#95ace8"/>
                 </jsp:include>
             </c:forEach>
         </div>
         <button id="back" onclick="location.href='./scrolscrene2.jsp'">Back</button>
     </div>
 </div>
+
+<script>
+    document.getElementById("datePicker").addEventListener("change", function() {
+        let selectedDate = this.value;
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "SetDateServlet", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send("selectedDate=" + selectedDate);
+        console.log("Session attribute 'date_picked' set to: " + selectedDate);
+    });
+
+    let today = new Date();
+    document.getElementById("datePicker").value = today.toISOString().substring(0, 10);
+</script>
 </body>
 </html>
