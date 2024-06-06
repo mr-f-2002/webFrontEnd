@@ -27,14 +27,17 @@ public class CreateAttendanceServlet extends HttpServlet {
             if (studentIdStr != null) {
                 long studentId = Long.parseLong(studentIdStr);
                 long classroomId = currentClassroom.getId();
-                Date currentDate = (Date) request.getAttribute("currentDate");
+
+//                Date currentDate = (Date) request.getAttribute("currentDate");
+                Date currentDate = new Date(System.currentTimeMillis());
                 boolean present = request.getParameter("action").equals("present");
 
                 // Create an Attendance object
                 Attendance attendance = new Attendance(currentDate, classroomId, studentId, present);
-
+                System.out.println(currentDate.toString() + classroomId + studentId+present + "\n\n\n");
                 try {
                     rqm.create_attendance(attendance);
+                    System.out.println("attendence created");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
