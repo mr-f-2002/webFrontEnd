@@ -5,9 +5,10 @@
     session = request.getSession();
     StudentDTO studentDTO = (StudentDTO) session.getAttribute("studentDTO");
     List<ClassroomDTO> all_classrooms = (List<ClassroomDTO>) session.getAttribute("all_classrooms");
+    List<ClassroomDTO> all_classrooms_all = (List<ClassroomDTO>) session.getAttribute("all_class");
 
-    if (studentDTO == null || all_classrooms == null) {
-        response.sendRedirect("login.jsp");
+    if (studentDTO == null || all_classrooms == null || all_classrooms_all == null) {
+        response.sendRedirect("Student_login.jsp");
         return;
     }
 %>
@@ -114,7 +115,7 @@
 <body>
 <%
     session = request.getSession();
-    out.println(session.getAttribute("studentDTO"));
+//    out.println(session.getAttribute("studentDTO"));
 %>
 <div class="container">
     <div class="left">

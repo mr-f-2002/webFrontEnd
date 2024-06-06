@@ -6,6 +6,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.time.LocalDateTime" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.AssignmentDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,12 +141,23 @@
         #postBtn{
             margin-left: 20px;
         }
-        #contentContainer{
-            width: 90%;
-            min-height: 80%;
-            max-height: 80%;
+        #outerContainer{
             margin-top: 3%;
+            height: 80%;
+            width: 95%;
             overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #contentContainer, #contentContainer2{
+            width: 96%;
+            height: 100%;
+            overflow: auto;
+        }
+        #contentContainer2{
+            display: none;
         }
         .post {
             background-color: #f9f9f9;
@@ -211,7 +223,9 @@
             <p><strong>Name:</strong> <%= sdto.getName() %></p>
             <p><strong>Student ID:</strong> <%= sdto.getStudid() %></p>
         </div>
-        <button id="logoutBtn">Log Out</button>
+        <button id="logoutBtn" onclick="showPost()">Post</button>
+        <button id="logoutBtn" onclick="showAssignment()">Assignments</button>
+        <button id="logoutBtn" onclick="location.href='index.jsp';">Log Out</button>
     </div>
     <div class="right">
         <img src="./image/bg2.png" alt="">
@@ -220,10 +234,10 @@
             <h1 id="classroomTitle"><%= courseName  %></h1>
             <p><%= teacher %></p>
         </div>
-        <div style="width: 100%; height: 5%; display: flex;">
-            <textarea type="text" placeholder="Type something..." name="post" id="postText"></textarea>
-            <button id="postBtn" onclick="createPost()">Post</button>
-        </div>
+<%--        <div style="width: 100%; height: 5%; display: flex;">--%>
+<%--            <textarea type="text" placeholder="Type something..." name="post" id="postText"></textarea>--%>
+<%--            <button id="postBtn" onclick="createPost()">Post</button>--%>
+<%--        </div>--%>
         <%
             RequestMaker rqm = new RequestMaker();
             ClassroomDTO cdto = null;
@@ -232,15 +246,19 @@
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            List<Long> classlist = new ArrayList<>(cdto.getPosts());
-            classlist.sort((a, b) -> Math.toIntExact(b - a));
+            List<Long> postlist = new ArrayList<>(cdto.getPosts());
+            postlist.sort((a, b) -> Math.toIntExact(b - a));
+
+            List<Long> assignmentlist = new ArrayList<>(cdto.getAssignmentsHereID());
         %>
+        <div id="outerContainer">
         <div id="contentContainer">
             <%
-                for(Long id : classlist) {
+                for(Long id : postlist) {
                     PostDTO p = null;
                     try {
                         p = rqm.fetch_post(id);
+
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -265,6 +283,35 @@
             </div>
             <% } %>
         </div>
+        <div id="contentContainer2">
+            <%
+                for(Long id : assignmentlist) {
+                    AssignmentDTO a = null;
+                    try {
+                        a = rqm.fetch_ass(id);
+
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+            %>
+            <div class="post">
+                <div class="post-header">
+                    <p class="posted-by"><%= a.getTitle() %></p>
+                    <p class="timestamp">Deadline: <%= a.getDeadline() %></p>
+                </div>
+                <div class="post-content">
+                    <p class="text"><%= a.getInstruction() %></p>
+                    <ul class="links">
+                        <li>Assigned mark: <%= a.getMarks() %></li>
+                    </ul>
+                </div>
+                <div class="post-footer">
+                    <p class="classroom-id">Classroom ID: <%= a.getClassroomid() %></p>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        </div>
     </div>
 </div>
 
@@ -281,6 +328,15 @@
 
     function onAssignmentClick() {
         // Implement your logic to handle assignment click event
+    }
+
+    function showPost(){
+        document.getElementById("contentContainer").style.display = 'block';
+        document.getElementById("contentContainer2").style.display = 'none';
+    }
+    function showAssignment(){
+        document.getElementById("contentContainer").style.display = 'none';
+        document.getElementById("contentContainer2").style.display = 'block';
     }
 </script>
 </body>

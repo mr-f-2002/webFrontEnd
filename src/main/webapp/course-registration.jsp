@@ -1,3 +1,5 @@
+<%@ page import="com.example.projectfrontend2_2.DTO.ClassroomDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,6 +114,18 @@
             position: relative;
             margin-top: 5px;
         }
+        .holder div{
+            font-size: 20px;
+            padding: 5px 5px 5px 10px;
+        }
+        #register{
+            font-size: 20px;
+            margin: 20px;
+            padding: 10px;
+            border: none;
+            background-color: #967E76;
+            border-radius: 5px;
+        }
         #Logout1{
             position: absolute;
             bottom: 10px;
@@ -127,55 +141,80 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left">
-            <h2 >Student Portal</h2>
-            <div class="circle">
-                <img src="./image/student.png"/>
-            </div>
-            <div id="name" style="margin-top: 10px;">Niloy</div>
-            <div id="id">200041123</div>
-            <button id="Logout"onclick="goToHome()">Log Out</button>
+
+<div class="container">
+    <div class="left">
+        <h2>Student Portal</h2>
+        <div class="circle">
+            <img src="./image/student.png"/>
         </div>
-        <div class="right">
-            <img src="./image/bg2.png" alt="">
-            <div class="top">
-                <h1 >Register Here</h1>
-                <div class="r">
-                    <button id="back" onclick="goToHome2()">Back</button>
-                </div>
+        <div id="name" style="margin-top: 10px;">${student.name}</div>
+        <div id="id">${student.id}</div>
+        <button id="Logout" onclick="goToHome()">Log Out</button>
+    </div>
+    <div class="right">
+        <img src="./image/bg2.png" alt="">
+        <div class="top">
+            <h1>Register Here</h1>
+            <div class="r">
+                <button id="back" onclick="goToHome2()">Back</button>
             </div>
-            <select id="courses" onchange="onCourseClick()">
+        </div>
+        <form style="width: 80%" action="CourseRegistrationServlet" method="post">
+            <select name="courseId" id="courses" onchange="onCourseClick()">
                 <option selected>Classrooms</option>
-                <option>4621</option>
-                <option>4688</option>
+                <%
+                    session = request.getSession();
+                    List<ClassroomDTO> classrooms = (List<ClassroomDTO>) session.getAttribute("all_class");
+
+                    if (classrooms != null) {
+                        for (ClassroomDTO course : classrooms) {
+                %>
+                <option value="<%= course.getId() %>"
+                        data-courseName="<%= course.getCoursename() %>"
+                        data-teacher="<%= course.getTeacher() %>"
+                        data-assignments="<%= course.getAssignmentsHereID() %>">
+                    <%= course.getCoursename() %>
+                </option>
+                <%
+                        }
+                    }
+                %>
             </select>
             <div class="holder">
-                <div id="txt" ></div>
-                <div id="course" ></div>
-                <div id="teacher" ></div>
-                <div id="due_ass" ></div>
-                <button id="Logout1"  onclick="onRegisterClick()">Register</button>
+                <div id="txt"></div>
+                <div id="course"></div>
+                <div id="teacher"></div>
+                <div id="due_ass"></div>
+                <button type="submit" id="register">Register</button>
             </div>
-        </div>
+        </form>
     </div>
-    <script>
-        // Define your JavaScript functions here
-        function onCourseClick() {
-            // Add functionality for course click event
-        }
+</div>
+<script>
+    // JavaScript functions for interactivity
+    function onCourseClick() {
+        var select = document.getElementById("courses");
+        var selectedOption = select.options[select.selectedIndex];
 
-        function onRegisterClick() {
-            // Add functionality for register button click event
-        }
+        var courseId = selectedOption.value;
+        var courseName = selectedOption.getAttribute("data-courseName");
+        var teacher = selectedOption.getAttribute("data-teacher");
+        var assignments = selectedOption.getAttribute("data-assignments");
 
-        function goToHome() {
-            // Add functionality for Log Out button click event
-        }
+        document.getElementById("txt").innerText = "Course ID - "+selectedOption.value;
+        document.getElementById("course").innerText = courseName;
+        document.getElementById("teacher").innerText = "Teacher ID - " + teacher;
+        document.getElementById("due_ass").innerText = "Due Assignments - " + assignments;
+    }
 
-        function goToHome2() {
-            // Add functionality for Back button click event
-        }
-    </script>
+    function goToHome() {
+        window.location.href = './index.jsp';
+    }
+
+    function goToHome2() {
+        window.location.href = './ClassScene.jsp';
+    }
+</script>
 </body>
 </html>
