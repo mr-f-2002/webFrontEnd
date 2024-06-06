@@ -8,7 +8,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<div class="attendance-tile" style="background-color: #e5fdff; width: 98%; height: 50px; display: flex; align-items: center; padding: 1%;">
+<div class="attendance-tile" style="background-color: #e5fdff; width: 98%; height: 45px; margin: 2px 0; display: flex; align-items: center; padding: 1%;">
     <img src="./image/immigration.png" alt="Icon" style="height: 43px; width: 37px; margin-right: 10px;">
     <div style="flex-grow: 1;">
         <label style="font-family: 'Segoe UI Semilight'; font-size: 18px; text-align: center; display: block;">
