@@ -124,26 +124,26 @@ public class RequestMaker {
 
     }
 
-//    public void create_attendance(Attendance a) throws IOException, InterruptedException {
-//
-//        GsonBuilder builder = new GsonBuilder();
-//        builder.setDateFormat("yyyy-MM-dd");
-//        gson = builder.create();
-//
-//
-//        System.out.println(gson.toJson(a));
-//        HttpClient client = HttpClient.newHttpClient();
-//
-//        HttpRequest request = HttpRequest.newBuilder().
-//                uri(URI.create(url + "/classroom/createattendance")).
-//                POST(HttpRequest.BodyPublishers.ofString(gson.toJson(a))).
-//                header("Content-Type" , "application/json").
-//                build();
-//
-//        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//
-//    }
+    public void create_attendance(Attendance a) throws IOException, InterruptedException {
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.setDateFormat("yyyy-MM-dd");
+        gson = builder.create();
+
+
+        System.out.println(gson.toJson(a));
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder().
+                uri(URI.create(url + "/classroom/createattendance")).
+                POST(HttpRequest.BodyPublishers.ofString(gson.toJson(a))).
+                header("Content-Type" , "application/json").
+                build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+
+    }
     public ClassroomDTO fetch_classroom(Long Class_id) throws IOException, InterruptedException {
 
         gson = new Gson();

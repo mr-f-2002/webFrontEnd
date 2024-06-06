@@ -222,8 +222,10 @@
             <button type="submit">Assignments</button>
         </form>
         <button id="assignButton">Assign</button>
+        <form action="/attendance">
+            <input type="hidden" name="view" value="attendance">
         <button id="attendanceButton">Attendance</button>
-
+        </form>
         <form action="LogoutServlet" method="post">
             <button type="submit">Log Out</button>
         </form>

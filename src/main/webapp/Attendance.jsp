@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,8 +54,9 @@
             margin-bottom: 5px;
         }
         #scroll{
-            width: 102%;
-            min-height: 70vh;
+            width: 100%;
+            max-height: 70vh;
+            overflow-y: auto;
             border: 1px solid black;
             background-color: white;
             border-radius: 4px;
@@ -74,19 +76,23 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left">
-            <h1>Attendance</h1>
-            <img src="./image/event.png" alt="Event Image">
-        </div>
-        <div class="right">
-            <label >Enter Date:</label><br>
-            <input type="date" id="datePicker">
-            <div id="scroll">
-                <!-- Content to be scrolled goes here -->
-            </div>
-            <button id="back">Back</button>
-        </div>
+<div class="container">
+    <div class="left">
+        <h1>Attendance</h1>
+        <img src="./image/event.png" alt="Event Image">
     </div>
+    <div class="right">
+        <label>Enter Date:</label><br>
+        <input type="date" id="datePicker">
+        <div id="scroll">
+            <c:forEach var="student" items="${students}">
+                <jsp:include page="attendance-tile.jsp">
+                    <jsp:param name="studentId" value="${student.id}"/>
+                </jsp:include>
+            </c:forEach>
+        </div>
+        <button id="back">Back</button>
+    </div>
+</div>
 </body>
 </html>

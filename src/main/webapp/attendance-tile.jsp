@@ -1,48 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Tile</title>
-    <style>
-        .attendance-tile{
-            width: 100%;
-            height: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #967E76;
-            padding: 2px 5px;
-            margin: 1px;
-            border-radius: 4px;
-        }
-        img{
-            width: 30px;
-            height: auto;
-        }
-        .label{
-            color: white;
-        }
-        .pabox{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .pabox button{
-            width: fit-content;
-            margin: 1px;
-        }
-    </style>
-</head>
-<body>
-    <div class="attendance-tile">
-        <img src="./image/immigration.png" alt="Immigration">
-        <div class="label">ID</div>
-        <div class="pabox">
-            <button id="present" class="attendance-button" onclick="presentClick()">P</button>
-            <button id="absent" class="attendance-button" onclick="absentClick()">A</button>
-        </div>
+<%@ page import="com.example.projectfrontend2_2.http.RequestMaker" %>
+<%@ page import="com.example.projectfrontend2_2.DTO.StudentDTO" %>
+<%@ page import="java.io.IOException" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.sql.Date" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="com.example.projectfrontend2_2.servlets.AttendanceServlet" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<div class="attendance-tile" style="background-color: #e5fdff; width: 473px; height: 50px; display: flex; align-items: center; padding: 5px;">
+    <img src="./image/immigration.png" alt="Icon" style="height: 43px; width: 37px; margin-right: 10px;">
+    <div style="flex-grow: 1;">
+        <label style="font-family: 'Segoe UI Semilight'; font-size: 18px; text-align: center; display: block;">
+            ${param.studentId}
+        </label>
     </div>
-</body>
-</html>
+    <form action="/createAttendance" method="post">
+        <input type="hidden" name="studentId" value="${param.studentId}">
+        <input type="hidden" name="action" value="present">
+        <button type="submit" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; margin-right: 5px; cursor: pointer;">P</button>
+    </form>
+    <form action="/createAttendance" method="post">
+        <input type="hidden" name="studentId" value="${param.studentId}">
+        <input type="hidden" name="action" value="absent">
+        <button type="submit" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;">A</button>
+    </form>
+</div>
