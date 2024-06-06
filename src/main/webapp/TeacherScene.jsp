@@ -96,7 +96,7 @@
             flex-wrap: wrap;
         }
         .class {
-            width: 120px;
+            width: 20%;
             margin: 10px;
             border-radius: 5px;
             padding: 10px 0;
@@ -112,8 +112,14 @@
         }
         .class p {
             margin: 0;
-            padding: 0;
+            padding: 5px 20px;
+            text-align: center;
             color: white;
+        }
+        .class button{
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 5px;
         }
     </style>
 </head>

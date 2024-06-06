@@ -8,7 +8,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<div class="attendance-tile" style="background-color: #e5fdff; width: 473px; height: 50px; display: flex; align-items: center; padding: 5px;">
+<div class="attendance-tile" style="background-color: #e5fdff; width: 98%; height: 50px; display: flex; align-items: center; padding: 1%;">
     <img src="./image/immigration.png" alt="Icon" style="height: 43px; width: 37px; margin-right: 10px;">
     <div style="flex-grow: 1;">
         <label style="font-family: 'Segoe UI Semilight'; font-size: 18px; text-align: center; display: block;">
@@ -18,11 +18,16 @@
     <form action="/createAttendance" method="post">
         <input type="hidden" name="studentId" value="${param.studentId}">
         <input type="hidden" name="action" value="present">
-        <button type="submit" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; margin-right: 5px; cursor: pointer;">P</button>
+        <button type="submit" onclick="changeColor('green')" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; margin-right: 5px; cursor: pointer;">P</button>
     </form>
     <form action="/createAttendance" method="post">
         <input type="hidden" name="studentId" value="${param.studentId}">
         <input type="hidden" name="action" value="absent">
-        <button type="submit" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;">A</button>
+        <button type="submit" style="background-color: #95ace8; color: white; font-size: 15px; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;" onclick="changeColor('red')">A</button>
     </form>
+    <script>
+        function changeColor(color){
+            document.getElementById("absentBtn").style.background = color;
+        }
+    </script>
 </div>
