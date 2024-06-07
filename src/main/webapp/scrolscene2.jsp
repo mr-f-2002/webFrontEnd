@@ -368,6 +368,13 @@
                 <p><%= assignment.getInstruction() %></p>
                 <p><%= assignment.getMarks() %></p>
                 <p><%= lc.format(DateTimeFormatter.ofPattern("d MMM uuuu , HH:mm:ss ")) %></p>
+                <!-- Addition for deletion button -->
+                <% if (isTeacher) { %>
+                <form action="DeleteAssignmentServlet" method="post">
+                    <input type="hidden" name="assignmentId" value="<%= assignment.getId() %>">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+                <% } %>
             </div>
             <%
                     }

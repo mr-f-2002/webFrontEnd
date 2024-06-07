@@ -35,6 +35,21 @@ public class RequestMaker {
         url = "http://"+host_addr+":8080";
     }
 
+    public boolean deleteAssignment(Long assignmentId) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/classroom/deleteassignment/" + assignmentId))
+                .DELETE()
+                .build();
+
+        System.out.println("Response from delete assignment:");
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
+
+        return (response.statusCode() == 200);
+    }
+
     public StudentDTO login_attempt(LoginDTO ldto , String path) throws IOException, InterruptedException {
 
         gson = new Gson();
