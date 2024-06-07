@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @WebServlet("/createAttendance")
 public class CreateAttendanceServlet extends HttpServlet {
@@ -44,6 +45,15 @@ public class CreateAttendanceServlet extends HttpServlet {
                 // Create an Attendance object
                 Attendance attendance = new Attendance(currentDate, classroomId, studentId, present);
                 System.out.println(currentDate.toString() + classroomId + studentId+present + "\n\n\n");
+
+
+                List<Attendance> attendanceList = null;
+                try {
+                    attendanceList = rqm.fetchAttendanceByClassroomIdAndDate(currentClassroom.getId(),dateStr);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                session.setAttribute("attendanceList", attendanceList);
                 try {
                     rqm.create_attendance(attendance);
                     System.out.println("attendence created");

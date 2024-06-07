@@ -24,12 +24,17 @@ public class AttendanceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ClassroomDTO currentClassroom = (ClassroomDTO) session.getAttribute("currentClassroom");
+
+
+
         if (currentClassroom != null) {
             LocalDate currentDate = LocalDate.now(); // Assuming current date by default
             String dateParam = request.getParameter("date");
             if (dateParam != null && !dateParam.isEmpty()) {
                 currentDate = LocalDate.parse(dateParam);
             }
+
+
 
             // Fetch students for the current classroom
             List<Long> studentIds = new ArrayList<>(currentClassroom.getStudents());

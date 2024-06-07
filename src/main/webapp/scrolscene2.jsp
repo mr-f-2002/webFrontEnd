@@ -8,6 +8,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.io.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -277,7 +278,7 @@
     if (view == null) {
         view = "posts"; // Default view
     }
-    System.out.println("Page has been accessed");
+    //System.out.println("Page has been accessed");
 %>
 
 <body>
