@@ -4,8 +4,6 @@ import com.example.projectfrontend2_2.DTO.*;
 import com.example.projectfrontend2_2.MultipartUtility;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -357,10 +355,11 @@ public class RequestMaker {
                 .DELETE()
                 .build();
 
+        System.out.println("Response from delete post:");
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
 
-        System.out.println("Response from delete post:");
+
         return (response.statusCode() == 200) ;
     }
 

@@ -110,9 +110,8 @@
         }
         .attachmentPanel ul{
             background-color: #1133ba14;
-            flex: 1; /* Take up remaining space */
-            min-height: 100px;
-            max-height: 200px; /* Set a max height for scrolling */
+            flex: 1;
+            max-height: 200px;
             overflow-y: auto;
             border-radius: 5px;
             margin: 0;
@@ -120,18 +119,18 @@
         }
         .attachmentPanel li {
             background-color: #ffffff;
-            margin-bottom: 10px; /* Add space between items */
-            padding: 10px;
+            /*margin-bottom: 10px; */
+            padding: 3px;
             border-radius: 5px;
-            list-style: none; /* Remove default list style */
+            list-style: none;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space out the content */
+            justify-content: space-between;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
         .attachmentPanel li input {
-            width: 90%; /* Make input take most of the li's width */
-            padding: 10px;
+            width: 90%;
+            padding: 3px;
             border: none;
             border-radius: 5px;
             box-sizing: border-box;
@@ -350,6 +349,7 @@
                     <input type="hidden" name="postId" value="<%= post.getId() %>">
                     <button type="submit" class="delete-btn">Delete</button>
                 </form>
+
                 <% } %>
             </div>
 

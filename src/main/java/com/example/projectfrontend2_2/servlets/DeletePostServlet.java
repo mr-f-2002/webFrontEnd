@@ -1,14 +1,12 @@
-package com.example.projectfrontend2_2.servlet;
+package com.example.projectfrontend2_2.servlets;
 
 import com.example.projectfrontend2_2.http.RequestMaker;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/DeletePostServlet")
@@ -29,7 +27,7 @@ public class DeletePostServlet extends HttpServlet {
 
             if (success) {
                 // Forward the request to SelectClassroomServlet
-                response.sendRedirect("scrolscene2.jsp");
+                response.sendRedirect("./TeacherScene.jsp");
 
             } else {
                 response.getWriter().println("Failed to delete the post.");

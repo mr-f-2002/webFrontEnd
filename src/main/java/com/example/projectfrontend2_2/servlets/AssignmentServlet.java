@@ -63,7 +63,7 @@ public class AssignmentServlet extends HttpServlet {
         }
 
         // Redirect back to the classroom page
-        response.sendRedirect(request.getContextPath() + "/scrolscene2.jsp" );
+        response.sendRedirect(request.getContextPath() + "/TeacherScene.jsp" );
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

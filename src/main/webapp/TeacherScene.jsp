@@ -172,6 +172,7 @@
 </div>
 
 <script>
+
     function logout() {
         location.href = './index.jsp';
     }
