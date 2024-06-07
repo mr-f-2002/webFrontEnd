@@ -120,7 +120,7 @@
                 </jsp:include>
             </c:forEach>
         </div>
-        <button id="back" onclick="location.href='./scrolscrene2.jsp'">Back</button>
+        <button id="back" onclick="location.href='./scrolscene2.jsp'">Back</button>
     </div>
 </div>
 

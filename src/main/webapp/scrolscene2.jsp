@@ -182,12 +182,18 @@
         }
 
         .modal-content {
-            background-color: #fefefe;
+            background-color: #967E76;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
             border-radius: 5px;
+            color: white;
+        }
+
+        .modal-content label{
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .close {
